@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G民党全良難易度表</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      
+      /* ランプカラー */
+      --color-zenryo: #38bdf8;   /* 全良 */
+      --color-ka1: #22c55e;      /* 可1・可2~9 */
+      --color-fullcombo: #eab308;/* フルコン */
+      --color-clear: #64748b;    /* クリア */
+      --color-unclear: #334155;  /* 未クリア */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Meiryo", system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding-bottom: 60px;
+    }
+
+    /* ヘッダー */
+    header {
+      background: #1e293b;
+      padding: 1rem;
+      border-bottom: 2px solid #334155;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .title-area {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    h1 { font-size: 1.4rem; color: var(--accent); font-weight: 900; letter-spacing: 0.5px; }
+    
+    .update-date {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      background: #1e293b;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px dashed #475569;
+    }
+    .update-date.editable {
+      cursor: pointer;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    
+    .user-panel {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn:hover { background: var(--accent-hover); color: #fff; }
+    .btn-secondary {
+      background: #475569;
+      color: #fff;
+    }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-xs { padding: 2px 6px; font-size: 0.7rem; border-radius: 4px; }
+    .btn-success { background: #22c55e; color: #fff; }
+    .btn-success:hover { background: #16a34a; }
+    .btn-warning { background: #f59e0b; color: #000; }
+    .btn-warning:hover { background: #d97706; }
+
+    /* コントロールバー */
+    .controls {
+      max-width: 1200px;
+      margin: 15px auto;
+      padding: 0 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    input, select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      background: #1e293b;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    input[type="text"], input[type="password"] { flex: 1; min-width: 200px; }
+
+    /* プレイヤープロフィールパネル */
+    .profile-panel {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .player-name-display {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    /* レート表示ボックス共通ベース */
+    .progress-box {
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 0 10px;
+    }
+    .maimai-rate-panel {
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* --- 各レート帯ごとの背景カラー・枠線デザイン --- */
+    .panel-white {
+      background: linear-gradient(135deg, #334155, #1e293b);
+      border: 2px solid #cbd5e1;
+    }
+    .panel-blue {
+      background: linear-gradient(135deg, #0e3a5a, #0f172a);
+      border: 2px solid #06b6d4;
+    }
+    .panel-green {
+      background: linear-gradient(135deg, #064e3b, #0f172a);
+      border: 2px solid #4ade80;
+    }
+    .panel-yellow {
+      background: linear-gradient(135deg, #713f12, #0f172a);
+      border: 2px solid #facc15;
+    }
+    .panel-red {
+      background: linear-gradient(135deg, #7f1d1d, #0f172a);
+      border: 2px solid #f87171;
+    }
+    .panel-purple {
+      background: linear-gradient(135deg, #581c87, #0f172a);
+      border: 2px solid #e879f9;
+    }
+    .panel-copper {
+      background: linear-gradient(135deg, #7c2d12, #0f172a);
+      border: 2px solid #fdba74;
+    }
+    .panel-silver {
+      background: linear-gradient(135deg, #334155, #0f172a);
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 0 15px rgba(226, 232, 240, 0.2);
+    }
+    .panel-gold {
+      background: linear-gradient(135deg, #78350f, #1e1b4b, #0f172a);
+      border: 2px solid #f59e0b;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);
+    }
+    .panel-platinum {
+      background: linear-gradient(135deg, #0369a1, #1e1b4b, #0f172a);
+      border: 2px solid #38bdf8;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+    .panel-rainbow {
+      background: linear-gradient(135deg, #311042, #1e1b4b, #0f172a);
+      border: 2px solid #c084fc;
+      box-shadow: 0 0 22px rgba(192, 132, 252, 0.45);
+    }
+
+    /* --- 16000(極)到達時：枠がゆっくり美しい虹色を描いて光る --- */
+    @keyframes panelRainbowExtremeFrame {
+      0% {
+        border-color: #ff3366;
+        box-shadow: 0 0 25px rgba(255, 51, 102, 0.6);
+        background: linear-gradient(135deg, #2e082f, #1a0524, #0f172a);
+      }
+      20% {
+        border-color: #ff9933;
+        box-shadow: 0 0 25px rgba(255, 153, 51, 0.6);
+      }
+      40% {
+        border-color: #ffff33;
+        box-shadow: 0 0 25px rgba(255, 255, 51, 0.6);
+      }
+      60% {
+        border-color: #33ccff;
+        box-shadow: 0 0 25px rgba(51, 204, 255, 0.6);
+      }
+      80% {
+        border-color: #cc33ff;
+        box-shadow: 0 0 25px rgba(204, 51, 255, 0.6);
+      }
+      100% {
+        border-color: #ff3366;
+        box-shadow: 0 0 25px rgba(255, 51, 102, 0.6);
+        background: linear-gradient(135deg, #2e082f, #1a0524, #0f172a);
+      }
+    }
+    .maimai-rate-panel.panel-rainbow-extreme {
+      animation: panelRainbowExtremeFrame 5s linear infinite;
+    }
+
+    /* パネル全体を横切るキラキラシマーエフェクト */
+    .maimai-rate-panel.panel-rainbow-extreme::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent 45%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 55%
+      );
+      transform: rotate(30deg);
+      pointer-events: none;
+      animation: extremeShimmer 3.5s ease-in-out infinite;
+    }
+    @keyframes extremeShimmer {
+      0% { transform: translateY(-100%) rotate(30deg); }
+      100% { transform: translateY(100%) rotate(30deg); }
+    }
+
+    .rate-title-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .rate-title-sub {
+      font-size: 0.75rem;
+      color: #a5b4fc;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .rate-badge-title {
+      font-size: 0.85rem;
+      font-weight: 900;
+      padding: 1px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* レート数字の基本スタイル */
+    .rate-main-num {
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1.1;
+      position: relative;
+      display: inline-block;
+    }
+    .rate-white { color: #cbd5e1; text-shadow: 0 2px 8px rgba(203,213,225,0.3); }
+    .rate-blue { color: #06b6d4; text-shadow: 0 2px 10px rgba(6,182,212,0.4); }
+    .rate-green { color: #4ade80; text-shadow: 0 2px 10px rgba(74,222,128,0.4); }
+    .rate-yellow { color: #facc15; text-shadow: 0 2px 10px rgba(250,204,21,0.4); }
+    .rate-red { color: #f87171; text-shadow: 0 2px 10px rgba(248,113,113,0.4); }
+    .rate-purple { color: #e879f9; text-shadow: 0 2px 10px rgba(232,121,249,0.4); }
+    .rate-copper { color: #fdba74; text-shadow: 0 2px 10px rgba(253,186,116,0.4); }
+    .rate-silver { color: #e2e8f0; text-shadow: 0 2px 12px rgba(226,232,240,0.6); }
+    .rate-gold { color: #f59e0b; text-shadow: 0 2px 12px rgba(245,158,11,0.6); }
+    .rate-platinum { color: #38bdf8; text-shadow: 0 2px 12px rgba(56,189,248,0.6); }
+    
+    /* 通常虹レート（数字と文字：程よく輝くグラデーション） */
+    @keyframes rainbowShineSlow {
+      to { background-position: 200% center; }
+    }
+    .rate-rainbow {
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #38bdf8);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.6));
+      animation: rainbowShineSlow 4s linear infinite;
+    }
+
+    /* 虹(極)レート専用の数字：極みらしい強いキラキラエフェクト付き */
+    @keyframes extremeTextSparkle {
+      0%, 100% {
+        filter: drop-shadow(0 0 6px rgba(255, 51, 102, 0.9)) drop-shadow(0 0 14px rgba(255, 255, 255, 0.7));
+      }
+      33% {
+        filter: drop-shadow(0 0 10px rgba(255, 255, 51, 1)) drop-shadow(0 0 18px rgba(51, 204, 255, 0.9));
+      }
+      66% {
+        filter: drop-shadow(0 0 10px rgba(51, 204, 255, 1)) drop-shadow(0 0 18px rgba(204, 51, 255, 0.9));
+      }
+    }
+    .rate-rainbow-extreme-text {
+      background: linear-gradient(90deg, #ff3366, #ff9933, #ffff33, #33ccff, #cc33ff, #ff3366);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowShineSlow 3s linear infinite, extremeTextSparkle 1.8s ease-in-out infinite;
+    }
+
+    .progress-bar-bg {
+      height: 12px;
+      background: #334155;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+    }
+    .progress-fill { height: 100%; transition: width 0.3s; }
+
+    /* 難易度表グリッド */
+    .difficulty-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+    .rank-section {
+      margin-bottom: 25px;
+      background: #182232;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #334155;
+    }
+    .rank-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+    }
+    .song-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
+    }
+
+    /* 楽曲カード */
+    .song-card {
+      background: var(--color-unclear);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s, box-shadow 0.2s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 65px;
+    }
+    .song-card:hover { transform: translateY(-2px); }
+    .song-name { font-size: 0.85rem; font-weight: bold; line-height: 1.3; pointer-events: none; }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      gap: 4px;
+      pointer-events: none;
+    }
+    .song-status { font-size: 0.7rem; opacity: 0.9; font-weight: bold; }
+    .admin-controls { display: flex; gap: 3px; align-items: center; flex-wrap: wrap; pointer-events: auto; }
+
+    /* 各状態の色指定 */
+    .song-card.lamp-zenryo { background-color: var(--color-zenryo); color: #000; }
+    .song-card.lamp-ka1, .song-card.lamp-ka2_9 { background-color: var(--color-ka1); color: #fff; }
+    .song-card.lamp-fullcombo { background-color: var(--color-fullcombo); color: #000; }
+    .song-card.lamp-clear { background-color: var(--color-clear); color: #fff; }
+
+    /* モーダル */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 440px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .modal-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; }
+    .lamp-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .lamp-btn {
+      padding: 12px;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .admin-tag {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 5px;
+    }
+
+    /* 枠詳細モーダル（上位15曲表示） */
+    .detail-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 15px;
+      max-height: none;
+      overflow-y: visible;
+      background: #0f172a;
+      border-radius: 6px;
+      padding: 8px;
+      border: 1px solid #334155;
+      font-size: 0.8rem;
+    }
+    .detail-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 8px;
+      border-bottom: 1px solid #1e293b;
+      gap: 10px;
+    }
+    .detail-list li:last-child { border-bottom: none; }
+    .detail-song-name {
+      font-weight: bold;
+      font-size: 0.8rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      padding-right: 8px;
+    }
+    .detail-right-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .detail-lamp-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      white-space: nowrap;
+      text-align: center;
+      min-width: 48px;
+    }
+    .detail-rate-val {
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--accent);
+      white-space: nowrap;
+      font-size: 0.85rem;
+      width: 55px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="title-area">
+        <h1>G民党全良難易度表</h1>
+        <span id="updateDateDisplay" class="update-date editable" onclick="editUpdateDate()" title="クリックして日付を変更">最終更新 10/17</span>
+        <span id="adminBadge" style="display: inline-block;" class="admin-tag">ADMIN</span>
+      </div>
+      <div class="user-panel">
+        <button class="btn btn-warning" style="font-size: 0.85rem;" onclick="openDataSyncModal()">🔄 データ移行・同期</button>
+        <button class="btn btn-success" id="saveCodeBtn" style="display: inline-block;" onclick="generateAndUpdateCode()">💾 コードを保存（出力）</button>
+        <button class="btn btn-secondary" onclick="toggleAdmin()">⚙️ 管理者</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- コントロールバー -->
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="曲名を検索..." oninput="renderApp()">
+    <select id="filterLamp" onchange="renderApp()">
+      <option value="all">すべての曲</option>
+      <option value="zenryo">全良</option>
+      <option value="ka1">可1</option>
+      <option value="ka2_9">可2~9</option>
+      <option value="fullcombo">フルコン</option>
+      <option value="clear">クリア</option>
+      <option value="unclear">未クリア</option>
+    </select>
+    <label style="font-size: 0.85rem; cursor: pointer;">
+      <input type="checkbox" id="quickCycle" style="vertical-align: middle;"> 1タップ連打切り替え
+    </label>
+    <button class="btn btn-secondary" id="addSongBtn" style="display: inline-block;" onclick="openAddSongModal()">+ 曲の追加</button>
+  </div>
+
+  <!-- レート＆プレイヤープロフィールサマリー -->
+  <div class="progress-box">
+    <!-- プレイヤー情報パネル -->
+    <div class="profile-panel">
+      <div class="profile-info">
+        <span class="player-name-display" id="displayName">名無しどん</span>
+      </div>
+      <div>
+        <button class="btn btn-secondary" style="font-size: 0.80rem; padding: 4px 10px;" onclick="openProfileModal()">✏️ 名前変更</button>
+      </div>
+    </div>
+
+    <div class="maimai-rate-panel" id="ratePanelBox">
+      <div>
+        <div class="rate-title-wrapper">
+          <div class="rate-title-sub" id="maxRateLabel">RATING (BEST 15 + BONUSES)</div>
+          <span id="rateBadgeTitle" class="rate-badge-title rate-rainbow">虹レート</span>
+        </div>
+        <div class="rate-main-num rate-rainbow" id="playerRate">16,777</div>
+      </div>
+      <div>
+        <button class="btn btn-secondary" style="font-size: 0.85rem;" onclick="openRateDetailModal()">📊 枠詳細を確認</button>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;">
+      <span>全良達成率: <strong id="zenryoRate">100.0%</strong></span>
+      <span id="lampCounts">総曲数: 145 | 全良: 145 | 可1: 0 | 可2~9: 0 | FC: 0 | クリア: 0</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div id="barZenryo" class="progress-fill" style="background: var(--color-zenryo); width: 100%;"></div>
+      <div id="barKa1" class="progress-fill" style="background: var(--color-ka1); width: 0%;"></div>
+      <div id="barFC" class="progress-fill" style="background: var(--color-fullcombo); width: 0%;"></div>
+      <div id="barClear" class="progress-fill" style="background: var(--color-clear); width: 0%;"></div>
+    </div>
+  </div>
+
+  <!-- 難易度一覧 -->
+  <div id="difficultyContainer" class="difficulty-container"></div>
+
+  <!-- プロフィール編集モーダル -->
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <div class="modal-title">プレイヤー名の変更</div>
+      <label style="font-size: 0.8rem; color: var(--text-sub); display: block; margin-bottom: 4px;">プレイヤー名</label>
+      <input type="text" id="inputName" placeholder="例: どんちゃん" style="width: 100%; margin-bottom: 15px;">
+
+      <button class="btn" style="width: 100%; margin-bottom: 8px;" onclick="saveProfile()">保存する</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('profileModal')">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- 管理者パスワード入力用モーダル（入力文字非表示 / 伏せ字対応） -->
+  <div class="modal" id="adminPasswordModal">
+    <div class="modal-content" style="max-width: 360px;">
+      <div class="modal-title">管理者認証</div>
+      <label style="font-size: 0.8rem; color: var(--text-sub); display: block; margin-bottom: 6px;">パスワードを入力してください</label>
+      <input type="password" id="adminPasswordInput" placeholder="••••••••" style="width: 100%; margin-bottom: 15px;" onkeydown="if(event.key==='Enter') submitAdminPassword()">
+      <button class="btn" style="width: 100%; margin-bottom: 8px;" onclick="submitAdminPassword()">ログイン</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('adminPasswordModal')">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- ランプ選択モーダル -->
+  <div class="modal" id="lampModal">
+    <div class="modal-content">
+      <div class="modal-title" id="modalSongTitle">生命性シンドロウム(裏)</div>
+      <div class="lamp-options">
+        <button class="lamp-btn" style="background: var(--color-zenryo); color:#000;" onclick="selectLamp('zenryo')">全良</button>
+        <button class="lamp-btn" style="background: var(--color-ka1); color:#fff;" onclick="selectLamp('ka1')">可1</button>
+        <button class="lamp-btn" style="background: var(--color-ka1); color:#fff;" onclick="selectLamp('ka2_9')">可2~9</button>
+        <button class="lamp-btn" style="background: var(--color-fullcombo); color:#000;" onclick="selectLamp('fullcombo')">フルコン</button>
+        <button class="lamp-btn" style="background: var(--color-clear); color:#fff;" onclick="selectLamp('clear')">クリア</button>
+      </div>
+      <button class="lamp-btn" style="background: var(--color-unclear); color:#fff; width:100%; margin-bottom: 10px;" onclick="selectLamp('unclear')">未クリアに戻す</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('lampModal')">閉じる</button>
+    </div>
+  </div>
+
+  <!-- 枠詳細確認モーダル（上位15曲表示 ＋ ボーナス内訳） -->
+  <div class="modal" id="rateDetailModal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-title" style="margin-bottom: 10px;">ベスト枠詳細 (上位15曲)</div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-size: 0.85rem; font-weight: bold; color: var(--accent);">🔥 曲名 ｜ ランプ ｜ レート数</span>
+      </div>
+      <ul id="bestListContainer" class="detail-list"></ul>
+
+      <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; font-size: 0.85rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: var(--text-sub);">⭐ 全良ボーナス (<span id="zenryoCountText">141</span>曲 × 7.0)</span>
+        <span style="font-family: monospace; font-weight: bold; color: #38bdf8;" id="zenryoBonusText">+987</span>
+      </div>
+
+      <div style="background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #334155; font-size: 0.85rem; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: var(--text-sub);">👑 フルコンボーナス (<span id="fcCountText">0</span>曲 × 3.0)</span>
+        <span style="font-family: monospace; font-weight: bold; color: #eab308;" id="fcBonusText">+0</span>
+      </div>
+
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('rateDetailModal')">閉じる</button>
+    </div>
+  </div>
+
+  <!-- データ移行・同期モーダル -->
+  <div class="modal" id="dataSyncModal">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-title">セーブデータの移行・同期</div>
+      <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 10px;">
+        別の端末やブラウザにデータを移すときは、下のコードをコピーして移行先で貼り付けてください。
+      </p>
+      
+      <label style="font-size: 0.80rem; color: var(--accent); font-weight: bold; display: block; margin-bottom: 4px;">現在のセーブデータ（エクスポート）</label>
+      <textarea id="syncExportArea" style="width: 100%; height: 90px; background: #0f172a; color: #38bdf8; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #475569; margin-bottom: 10px;" readonly=""></textarea>
+      <button class="btn" style="width: 100%; margin-bottom: 15px;" onclick="copySyncData()">データをコピーする</button>
+
+      <label style="font-size: 0.80rem; color: #22c55e; font-weight: bold; display: block; margin-bottom: 4px;">データの読み込み（インポート）</label>
+      <textarea id="syncImportArea" placeholder="ここにバックアップしたコードを貼り付けてください..." style="width: 100%; height: 90px; background: #0f172a; color: #fff; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #475569; margin-bottom: 10px;"></textarea>
+      <button class="btn btn-success" style="width: 100%; margin-bottom: 10px;" onclick="importSyncData()">データを反映する（上書き）</button>
+
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('dataSyncModal')">閉じる</button>
+    </div>
+  </div>
+
+  <!-- 楽曲追加モーダル -->
+  <div class="modal" id="addSongModal">
+    <div class="modal-content">
+      <div class="modal-title">新規楽曲の追加</div>
+      <input type="text" id="newSongName" placeholder="曲名を入力" style="width: 100%; margin-bottom: 10px;">
+      <select id="newSongRank" style="width: 100%; margin-bottom: 15px;">
+        <option value="SSS">SSS</option>
+        <option value="SS+">SS+</option>
+        <option value="SS">SS</option>
+        <option value="SS-">SS-</option>
+        <option value="S+">S+</option>
+        <option value="S">S</option>
+        <option value="S-">S-</option>
+        <option value="A+">A+</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="小学生帯">小学生帯</option>
+      </select>
+      <button class="btn" style="width: 100%; margin-bottom: 8px;" onclick="addSong()">追加する</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('addSongModal')">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- 楽曲編集モーダル -->
+  <div class="modal" id="editSongModal">
+    <div class="modal-content">
+      <div class="modal-title">楽曲の編集</div>
+      <input type="hidden" id="editSongId" value="">
+      <input type="text" id="editSongName" placeholder="曲名" style="width: 100%; margin-bottom: 10px;">
+      <select id="editSongRank" style="width: 100%; margin-bottom: 15px;">
+        <option value="SSS">SSS</option>
+        <option value="SS+">SS+</option>
+        <option value="SS">SS</option>
+        <option value="SS-">SS-</option>
+        <option value="S+">S+</option>
+        <option value="S">S</option>
+        <option value="S-">S-</option>
+        <option value="A+">A+</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="小学生帯">小学生帯</option>
+      </select>
+      <button class="btn" style="width: 100%; margin-bottom: 8px;" onclick="updateSong()">変更を保存</button>
+      <button class="btn btn-secondary" style="width: 100%;" onclick="closeModal('editSongModal')">キャンセル</button>
+    </div>
+  </div>
+
+  <!-- コード出力用モーダル -->
+  <div class="modal" id="codeExportModal">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-title">保存用コードが生成されました！</div>
+      <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 10px;">下のコードをコピーして、ご自身のHTMLファイルに丸ごと貼り付けて上書きしてください。</p>
+      <textarea id="exportCodeArea" style="width: 100%; height: 250px; background: #0f172a; color: #38bdf8; font-family: monospace; font-size: 0.8rem; padding: 8px; border-radius: 6px; border: 1px solid #475569;" readonly=""></textarea>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button class="btn" style="flex: 1;" onclick="copyExportCode()">コードをコピー</button>
+        <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal('codeExportModal')">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // パスワードをBase64エンコード化（元のパスワード: syuuyataiko0127）
+    const ENCODED_ADMIN_PASSKEY = "c3l1dXlhdGFpa28wMTI3";
+
+    const rankBaseConstants = {
+      "SSS": 15.2,
+      "SS+": 14.7,
+      "SS": 14.2,
+      "SS-": 13.7,
+      "S+": 13.2,
+      "S": 12.7,
+      "S-": 12.2,
+      "A+": 11.7,
+      "A": 11.2,
+      "B": 10.5,
+      "C": 9.5,
+      "D": 8.5,
+      "E": 7.5,
+      "F": 6.5,
+      "小学生帯": 0.0
+    };
+
+    function isRankHighOrEqualS(rank) {
+      const highRanks = ["SSS", "SS+", "SS", "SS-", "S+", "S"];
+      return highRanks.includes(rank);
+    }
+
+    const defaultSongs = [
+  {
+    "id": 1,
+    "name": "ダイジョブですか？",
+    "rank": "SSS"
+  },
+  {
+    "id": 2,
+    "name": "幽霊船戦",
+    "rank": "SSS"
+  },
+  {
+    "id": 3,
+    "name": "Xaleid◆scopiX",
+    "rank": "SSS"
+  },
+  {
+    "id": 4,
+    "name": "庭師のおはなしによると",
+    "rank": "SSS"
+  },
+  {
+    "id": 5,
+    "name": "メモリア",
+    "rank": "SSS"
+  },
+  {
+    "id": 6,
+    "name": "Abstruse Dilemma",
+    "rank": "SSS"
+  },
+  {
+    "id": 7,
+    "name": "怪獣になりたい",
+    "rank": "SS+"
+  },
+  {
+    "id": 8,
+    "name": "お菓子の王国",
+    "rank": "SS+"
+  },
+  {
+    "id": 9,
+    "name": "Vulnerability",
+    "rank": "SS+"
+  },
+  {
+    "id": 10,
+    "name": "Exploits",
+    "rank": "SS+"
+  },
+  {
+    "id": 11,
+    "name": "Somnidiscotheque",
+    "rank": "SS+"
+  },
+  {
+    "id": 12,
+    "name": "Chaos:Q",
+    "rank": "SS+"
+  },
+  {
+    "id": 13,
+    "name": "F/S",
+    "rank": "SS+"
+  },
+  {
+    "id": 14,
+    "name": "raputa",
+    "rank": "SS+"
+  },
+  {
+    "id": 15,
+    "name": "Galaxy Forest 11.6&12",
+    "rank": "SS+"
+  },
+  {
+    "id": 16,
+    "name": "初音ミクの暴走",
+    "rank": "SS"
+  },
+  {
+    "id": 17,
+    "name": "おぎゃりないざー",
+    "rank": "SS"
+  },
+  {
+    "id": 18,
+    "name": "ネクラチューンサーカス",
+    "rank": "SS"
+  },
+  {
+    "id": 19,
+    "name": "ミラクル☆喫茶",
+    "rank": "SS"
+  },
+  {
+    "id": 20,
+    "name": "幽玄ノ乱(裏)",
+    "rank": "SS"
+  },
+  {
+    "id": 21,
+    "name": "Go Beyond",
+    "rank": "SS"
+  },
+  {
+    "id": 22,
+    "name": "U9",
+    "rank": "SS"
+  },
+  {
+    "id": 23,
+    "name": "KISKIL-LILLA",
+    "rank": "SS"
+  },
+  {
+    "id": 24,
+    "name": "Bad Encryption",
+    "rank": "SS-"
+  },
+  {
+    "id": 25,
+    "name": "Bossa Gabba(裏)",
+    "rank": "SS-"
+  },
+  {
+    "id": 27,
+    "name": "コンギョ",
+    "rank": "SS-"
+  },
+  {
+    "id": 28,
+    "name": "刻竜 〜Kokuryu〜(裏)",
+    "rank": "SS-"
+  },
+  {
+    "id": 29,
+    "name": "BEAT PRISONER",
+    "rank": "SS-"
+  },
+  {
+    "id": 30,
+    "name": "ホットドックドカぐいレース!!!!",
+    "rank": "SS-"
+  },
+  {
+    "id": 31,
+    "name": "QZKago Requiem(裏)",
+    "rank": "S+"
+  },
+  {
+    "id": 32,
+    "name": "Bad Maniacs",
+    "rank": "S+"
+  },
+  {
+    "id": 33,
+    "name": "BRAINSTORM",
+    "rank": "S+"
+  },
+  {
+    "id": 34,
+    "name": "World's end BLACKBOX(裏)",
+    "rank": "S+"
+  },
+  {
+    "id": 35,
+    "name": "SAMURAI-Scramble",
+    "rank": "S+"
+  },
+  {
+    "id": 36,
+    "name": "SAN値直葬",
+    "rank": "S+"
+  },
+  {
+    "id": 37,
+    "name": "コぇっちゃくてゴ×ンネ",
+    "rank": "S+"
+  },
+  {
+    "id": 38,
+    "name": "冥",
+    "rank": "S+"
+  },
+  {
+    "id": 39,
+    "name": "腐れ外道とチョコレゐト",
+    "rank": "S+"
+  },
+  {
+    "id": 40,
+    "name": "アクセラレイト",
+    "rank": "S+"
+  },
+  {
+    "id": 41,
+    "name": "ラストピースに祝福と栄光を",
+    "rank": "S+"
+  },
+  {
+    "id": 42,
+    "name": "惑星鉄道(裏)",
+    "rank": "S+"
+  },
+  {
+    "id": 43,
+    "name": "My Old Wounds",
+    "rank": "S+"
+  },
+  {
+    "id": 44,
+    "name": "音楽 -resolve-",
+    "rank": "S+"
+  },
+  {
+    "id": 45,
+    "name": "マシンガンポエムドール",
+    "rank": "S+"
+  },
+  {
+    "id": 46,
+    "name": "⁽⁽ଘ( ˙꒳˙ )ଓ⁾⁾ beyond reason",
+    "rank": "S+"
+  },
+  {
+    "id": 47,
+    "name": "葬送のエウロパ(裏)",
+    "rank": "S+"
+  },
+  {
+    "id": 48,
+    "name": "GAMECHANGER",
+    "rank": "S"
+  },
+  {
+    "id": 49,
+    "name": "IMAWANOKIWA",
+    "rank": "S"
+  },
+  {
+    "id": 50,
+    "name": "Makin' It",
+    "rank": "S"
+  },
+  {
+    "id": 51,
+    "name": "カル・テト (1年ありがと感謝歌)",
+    "rank": "S"
+  },
+  {
+    "id": 52,
+    "name": "彗星軌道の終着点",
+    "rank": "S"
+  },
+  {
+    "id": 53,
+    "name": "Mr beast dance",
+    "rank": "S"
+  },
+  {
+    "id": 54,
+    "name": "U&iVERSE -銀河驚翔-",
+    "rank": "S"
+  },
+  {
+    "id": 55,
+    "name": "DUE TOMORROW",
+    "rank": "S"
+  },
+  {
+    "id": 56,
+    "name": "未完成ノ蒸氣驅動乙女",
+    "rank": "S"
+  },
+  {
+    "id": 57,
+    "name": "Makear",
+    "rank": "S-"
+  },
+  {
+    "id": 58,
+    "name": "桜",
+    "rank": "S-"
+  },
+  {
+    "id": 59,
+    "name": "Zt!ri△",
+    "rank": "S-"
+  },
+  {
+    "id": 60,
+    "name": "イレギュラーマン",
+    "rank": "S-"
+  },
+  {
+    "id": 61,
+    "name": "The Chase",
+    "rank": "S-"
+  },
+  {
+    "id": 62,
+    "name": "SCREW __ owo __ SCREW",
+    "rank": "A+"
+  },
+  {
+    "id": 63,
+    "name": "儚キ戀ノ幻想譚",
+    "rank": "A+"
+  },
+  {
+    "id": 64,
+    "name": "Mare Nectaris",
+    "rank": "A+"
+  },
+  {
+    "id": 65,
+    "name": "ALTERNATOR",
+    "rank": "A+"
+  },
+  {
+    "id": 66,
+    "name": "夕焼け 〜Fading Day〜",
+    "rank": "A+"
+  },
+  {
+    "id": 67,
+    "name": "THE TIME MACHINE",
+    "rank": "A+"
+  },
+  {
+    "id": 68,
+    "name": "化けの花",
+    "rank": "A+"
+  },
+  {
+    "id": 69,
+    "name": "トイマチック☆パレード!!(裏)",
+    "rank": "A+"
+  },
+  {
+    "id": 70,
+    "name": "ラブコメトキドキシリアス",
+    "rank": "A+"
+  },
+  {
+    "id": 71,
+    "name": "3y3s",
+    "rank": "A+"
+  },
+  {
+    "id": 72,
+    "name": "Unknown Region",
+    "rank": "A+"
+  },
+  {
+    "id": 73,
+    "name": "Life is beautiful",
+    "rank": "A+"
+  },
+  {
+    "id": 74,
+    "name": "月暈",
+    "rank": "A+"
+  },
+  {
+    "id": 75,
+    "name": "Quon",
+    "rank": "A+"
+  },
+  {
+    "id": 76,
+    "name": "Maritare!",
+    "rank": "A+"
+  },
+  {
+    "id": 77,
+    "name": "三不粘をエロい目で見るな",
+    "rank": "A+"
+  },
+  {
+    "id": 78,
+    "name": "ド七五サンバ",
+    "rank": "A+"
+  },
+  {
+    "id": 79,
+    "name": "真超深TiON",
+    "rank": "A+"
+  },
+  {
+    "id": 80,
+    "name": "文明開化",
+    "rank": "A+"
+  },
+  {
+    "id": 81,
+    "name": "天藍のアイスヘヴン",
+    "rank": "A"
+  },
+  {
+    "id": 83,
+    "name": "蒼天のプリズムクラウン",
+    "rank": "A"
+  },
+  {
+    "id": 85,
+    "name": "BroGamer",
+    "rank": "A"
+  },
+  {
+    "id": 86,
+    "name": "オペラ！スペースオペラ！",
+    "rank": "A"
+  },
+  {
+    "id": 87,
+    "name": "Glory Steady Go!",
+    "rank": "A"
+  },
+  {
+    "id": 88,
+    "name": "初音天地開闢神話(裏)",
+    "rank": "A"
+  },
+  {
+    "id": 90,
+    "name": "灼熱Beach Side Bunny(表)",
+    "rank": "A"
+  },
+  {
+    "id": 91,
+    "name": "カル・テト (1月)",
+    "rank": "A"
+  },
+  {
+    "id": 92,
+    "name": "バカ通信",
+    "rank": "A"
+  },
+  {
+    "id": 93,
+    "name": "恋愛＝精度×認識力",
+    "rank": "A"
+  },
+  {
+    "id": 94,
+    "name": "BabeL 〜Grand Story〜",
+    "rank": "A"
+  },
+  {
+    "id": 95,
+    "name": "BabeL 〜roof garden〜",
+    "rank": "A"
+  },
+  {
+    "id": 96,
+    "name": "XL TECHNO -More Dance Remix-(表)",
+    "rank": "A"
+  },
+  {
+    "id": 97,
+    "name": "tripping jumping",
+    "rank": "B"
+  },
+  {
+    "id": 98,
+    "name": "シスターに懺悔を",
+    "rank": "B"
+  },
+  {
+    "id": 99,
+    "name": "World's end BLACKBOX(表)",
+    "rank": "B"
+  },
+  {
+    "id": 100,
+    "name": "QZKago Requiem(表)",
+    "rank": "B"
+  },
+  {
+    "id": 101,
+    "name": "ももいろの鍵",
+    "rank": "B"
+  },
+  {
+    "id": 102,
+    "name": "Xジェネの逆襲",
+    "rank": "B"
+  },
+  {
+    "id": 103,
+    "name": "キラー",
+    "rank": "B"
+  },
+  {
+    "id": 104,
+    "name": "MAX 300",
+    "rank": "B"
+  },
+  {
+    "id": 106,
+    "name": "Once Upon a Time",
+    "rank": "B"
+  },
+  {
+    "id": 1792259203149,
+    "name": "超青少年ノ為ノ超多幸ナ超古典的超舞曲",
+    "rank": "B"
+  },
+  {
+    "id": 107,
+    "name": "ホーリーサンバランド",
+    "rank": "B"
+  },
+  {
+    "id": 108,
+    "name": "彼岸花",
+    "rank": "B"
+  },
+  {
+    "id": 109,
+    "name": "Shapeshifter",
+    "rank": "B"
+  },
+  {
+    "id": 110,
+    "name": "XL TECHNO -More Dance Remix-(裏)",
+    "rank": "B"
+  },
+  {
+    "id": 112,
+    "name": "きゅうくらりん",
+    "rank": "C"
+  },
+  {
+    "id": 113,
+    "name": "voltississimo",
+    "rank": "C"
+  },
+  {
+    "id": 114,
+    "name": "Zenius -I- vanisher",
+    "rank": "C"
+  },
+  {
+    "id": 115,
+    "name": "永遠という名の媚薬",
+    "rank": "C"
+  },
+  {
+    "id": 116,
+    "name": "灼熱Beach Side Bunny(裏)",
+    "rank": "D"
+  },
+  {
+    "id": 117,
+    "name": "カル・テト (4月)",
+    "rank": "D"
+  },
+  {
+    "id": 118,
+    "name": "探検ノート (Street Style)",
+    "rank": "D"
+  },
+  {
+    "id": 119,
+    "name": "ポジティブ☆ダンスタイム",
+    "rank": "小学生帯"
+  },
+  {
+    "id": 120,
+    "name": "Worlders",
+    "rank": "小学生帯"
+  },
+  {
+    "id": 121,
+    "name": "ももいろの鍵",
+    "rank": "小学生帯"
+  },
+  {
+    "id": 122,
+    "name": "幽玄ノ乱(裏)",
+    "rank": "小学生帯"
+  },
+  {
+    "id": 1792168544863,
+    "name": "弦楽少女は諦めを知らずに",
+    "rank": "E"
+  },
+  {
+    "id": 1792168795036,
+    "name": "Hell? or Heaven?",
+    "rank": "S"
+  },
+  {
+    "id": 111,
+    "name": "bloomin' feeling",
+    "rank": "B"
+  },
+  {
+    "id": 1792169152062,
+    "name": "Triple Counter",
+    "rank": "A"
+  },
+  {
+    "id": 1792169365158,
+    "name": "Sage",
+    "rank": "S+"
+  },
+  {
+    "id": 1792169534176,
+    "name": "天空の夜明け",
+    "rank": "A+"
+  },
+  {
+    "id": 1792169722579,
+    "name": "BLACK.by X-Cross Fade(表)",
+    "rank": "E"
+  },
+  {
+    "id": 1792169912716,
+    "name": "BLACK.by X-Cross Fade(裏)",
+    "rank": "S"
+  },
+  {
+    "id": 1792170121834,
+    "name": "Festum Duodecimum",
+    "rank": "S+"
+  },
+  {
+    "id": 1792168976800,
+    "name": "Black Emperor",
+    "rank": "B"
+  },
+  {
+    "id": 1792170540173,
+    "name": "Vairocana",
+    "rank": "A+"
+  },
+  {
+    "id": 1792170698330,
+    "name": "OVERHEAT -Type P-(裏)",
+    "rank": "A+"
+  },
+  {
+    "id": 1792170880903,
+    "name": "量子の海のリントヴルム",
+    "rank": "S+"
+  },
+  {
+    "id": 1792171062114,
+    "name": "へんたいトリロジー",
+    "rank": "E"
+  },
+  {
+    "id": 1792170342790,
+    "name": "Sputnik",
+    "rank": "B"
+  },
+  {
+    "id": 1792171493635,
+    "name": "НУМЛ(裏)",
+    "rank": "SS-"
+  },
+  {
+    "id": 1792171739665,
+    "name": "BabeL ～Next Story～",
+    "rank": "S+"
+  },
+  {
+    "id": 1792171285117,
+    "name": "НУМЛ(表)",
+    "rank": "B"
+  },
+  {
+    "id": 1792246815800,
+    "name": "GiGaGaHell",
+    "rank": "S+"
+  },
+  {
+    "id": 1792247865863,
+    "name": "Popperz Chronicle(表)",
+    "rank": "SSS"
+  },
+  {
+    "id": 1792247871228,
+    "name": "Popperz Chronicle(裏)",
+    "rank": "SSS"
+  },
+  {
+    "id": 1792257882738,
+    "name": "o†o",
+    "rank": "SSS"
+  },
+  {
+    "id": 1792257905734,
+    "name": "Apollo",
+    "rank": "SS+"
+  },
+  {
+    "id": 1792246639957,
+    "name": "gigadelic",
+    "rank": "B"
+  },
+  {
+    "id": 1792259233825,
+    "name": "リリーゼと炎龍レーヴァテイン",
+    "rank": "A"
+  },
+  {
+    "id": 1792259262257,
+    "name": "ミルククラウン・オン・ソーネチカ(裏)",
+    "rank": "A"
+  },
+  {
+    "id": 1792259293611,
+    "name": "生命性シンドロウム(表)",
+    "rank": "A"
+  },
+  {
+    "id": 1792259338220,
+    "name": "生命性シンドロウム(裏)",
+    "rank": "SS-"
+  }
+];
+
+    const ranks = ["SSS", "SS+", "SS", "SS-", "S+", "S", "S-", "A+", "A", "B", "C", "D", "E", "F", "小学生帯"];
+
+    let songs = defaultSongs;
+    let savedSongsVersion = localStorage.getItem("don_songs_version");
+    let currentHtmlVersion = defaultSongs.length.toString();
+
+    let storedLamps = JSON.parse(localStorage.getItem("don_single_user_lamps")) || {};
+    
+    if (savedSongsVersion !== currentHtmlVersion) {
+      localStorage.setItem("don_songs", JSON.stringify(defaultSongs));
+      localStorage.setItem("don_songs_version", currentHtmlVersion);
+    } else {
+      let localSongs = JSON.parse(localStorage.getItem("don_songs"));
+      if (localSongs) {
+        songs = localSongs;
+      }
+    }
+
+    let updateDate = localStorage.getItem("don_update_date") || "10/17";
+    let playerName = localStorage.getItem("don_player_name") || "名無しどん";
+    let maxRatingRecord = Number(localStorage.getItem("don_max_rating")) || 0.0;
+    let lastRateTierName = localStorage.getItem("don_last_rate_tier") || "";
+    let isAdmin = false;
+    let selectedSongId = null;
+
+    function getUserLamps() {
+      return JSON.parse(localStorage.getItem("don_single_user_lamps")) || {};
+    }
+
+    function saveUserLamps(lamps) {
+      localStorage.setItem("don_single_user_lamps", JSON.stringify(lamps));
+    }
+
+    function calculateMaimaiRate(userLamps) {
+      let songScores = [];
+      let zenryoBonusCount = 0;
+      let fcBonusCount = 0;
+
+      songs.forEach(song => {
+        if (song.rank === "小学生帯") return;
+
+        const lamp = userLamps[song.id] || "unclear";
+        const base = rankBaseConstants[song.rank] || 0.0;
+        let mult = 0.0;
+
+        if (lamp === "zenryo") {
+          mult = 1.00;
+          zenryoBonusCount++;
+        } else if (lamp === "ka1") {
+          mult = 0.97;
+          fcBonusCount++;
+        } else if (lamp === "ka2_9") {
+          mult = 0.94;
+          fcBonusCount++;
+        } else if (lamp === "fullcombo") {
+          mult = 0.91;
+          fcBonusCount++;
+        } else if (lamp === "clear") {
+          if (isRankHighOrEqualS(song.rank)) {
+            mult = 0.60;
+          } else {
+            mult = 0.0;
+          }
+        } else {
+          mult = 0.0;
+        }
+
+        const singleRate = Math.round(base * mult * 1052.6315); 
+        if (singleRate > 0) {
+          songScores.push({ name: song.name, rate: singleRate, lamp: lamp });
+        }
+      });
+
+      songScores.sort((a, b) => b.rate - a.rate);
+
+      let bestAvg = 0;
+      if (songScores.length > 0) {
+        const countToDivide = Math.min(15, songScores.length);
+        const effectiveSongs = songScores.slice(0, countToDivide);
+        const sum = effectiveSongs.reduce((acc, val) => acc + val.rate, 0);
+        bestAvg = Math.round(sum / 15);
+      }
+
+      const zenryoBonusTotal = Math.round(zenryoBonusCount * 7.0 * 10) / 10;
+      const fcBonusTotal = Math.round(fcBonusCount * 3.0 * 10) / 10;
+      const totalRate = Math.round((bestAvg + zenryoBonusTotal + fcBonusTotal) * 10) / 10;
+
+      return {
+        total: totalRate,
+        bestList: songScores.slice(0, 15),
+        zenryoCount: zenryoBonusCount,
+        zenryoBonusTotal: zenryoBonusTotal,
+        fcCount: fcBonusCount,
+        fcBonusTotal: fcBonusTotal
+      };
+    }
+
+    // レートに応じたカラークラス、背景用クラス、称号名の判定
+    function getRateStyleInfo(rate) {
+      if (rate >= 16000) return { cls: "rate-rainbow-extreme-text", panelCls: "panel-rainbow-extreme", name: "虹(極)レート", extreme: true };
+      if (rate >= 15000) return { cls: "rate-rainbow", panelCls: "panel-rainbow", name: "虹レート", extreme: false };
+      if (rate >= 14500) return { cls: "rate-platinum", panelCls: "panel-platinum", name: "プラチナレート", extreme: false };
+      if (rate >= 14000) return { cls: "rate-gold", panelCls: "panel-gold", name: "金レート", extreme: false };
+      if (rate >= 13000) return { cls: "rate-silver", panelCls: "panel-silver", name: "銀レート", extreme: false };
+      if (rate >= 12000) return { cls: "rate-copper", panelCls: "panel-copper", name: "銅レート", extreme: false };
+      if (rate >= 10000) return { cls: "rate-purple", panelCls: "panel-purple", name: "紫レート", extreme: false };
+      if (rate >= 7000)  return { cls: "rate-red", panelCls: "panel-red", name: "赤レート", extreme: false };
+      if (rate >= 4000)  return { cls: "rate-yellow", panelCls: "panel-yellow", name: "黄レート", extreme: false };
+      if (rate >= 2000)  return { cls: "rate-green", panelCls: "panel-green", name: "緑レート", extreme: false };
+      if (rate >= 1000)  return { cls: "rate-blue", panelCls: "panel-blue", name: "青レート", extreme: false };
+      return { cls: "rate-white", panelCls: "panel-white", name: "白レート", extreme: false };
+    }
+
+    function openProfileModal() {
+      document.getElementById("inputName").value = playerName;
+      document.getElementById("profileModal").classList.add("active");
+    }
+
+    function saveProfile() {
+      playerName = document.getElementById("inputName").value.trim() || "名無しどん";
+      localStorage.setItem("don_player_name", playerName);
+
+      closeModal("profileModal");
+      renderApp();
+    }
+
+    function openRateDetailModal() {
+      const userLamps = getUserLamps();
+      const rateData = calculateMaimaiRate(userLamps);
+
+      const bestUl = document.getElementById("bestListContainer");
+      bestUl.innerHTML = "";
+      if (rateData.bestList.length === 0) {
+        bestUl.innerHTML = "<li><span>対象曲がありません</span><span>-</span></li>";
+      } else {
+        rateData.bestList.forEach(item => {
+          const lampNameMap = {
+            zenryo: "全良",
+            ka1: "可1",
+            ka2_9: "可2~9",
+            fullcombo: "フルコン",
+            clear: "クリア",
+            unclear: "未クリア"
+          };
+          const lampBgMap = {
+            zenryo: "var(--color-zenryo)",
+            ka1: "var(--color-ka1)",
+            ka2_9: "var(--color-ka1)",
+            fullcombo: "var(--color-fullcombo)",
+            clear: "var(--color-clear)",
+            unclear: "var(--color-unclear)"
+          };
+          const lampColorMap = {
+            zenryo: "#000",
+            ka1: "#fff",
+            ka2_9: "#fff",
+            fullcombo: "#000",
+            clear: "#fff",
+            unclear: "#fff"
+          };
+
+          const lText = lampNameMap[item.lamp] || "未クリア";
+          const bg = lampBgMap[item.lamp] || "var(--color-unclear)";
+          const fg = lampColorMap[item.lamp] || "#fff";
+
+          bestUl.innerHTML += `
+            <li>
+              <span class="detail-song-name">${item.name}</span>
+              <div class="detail-right-box">
+                <span class="detail-lamp-badge" style="background: ${bg}; color: ${fg};">${lText}</span>
+                <span class="detail-rate-val">${item.rate.toLocaleString()}</span>
+              </div>
+            </li>
+          `;
+        });
+      }
+
+      document.getElementById("zenryoCountText").textContent = rateData.zenryoCount;
+      document.getElementById("zenryoBonusText").textContent = `+${rateData.zenryoBonusTotal.toLocaleString()}`;
+      document.getElementById("fcCountText").textContent = rateData.fcCount;
+      document.getElementById("fcBonusText").textContent = `+${rateData.fcBonusTotal.toLocaleString()}`;
+
+      document.getElementById("rateDetailModal").classList.add("active");
+    }
+
+    function openDataSyncModal() {
+      const userLampsStr = localStorage.getItem("don_single_user_lamps") || "{}";
+      document.getElementById("syncExportArea").value = userLampsStr;
+      document.getElementById("syncImportArea").value = "";
+      document.getElementById("dataSyncModal").classList.add("active");
+    }
+
+    function copySyncData() {
+      const area = document.getElementById("syncExportArea");
+      area.select();
+      navigator.clipboard.writeText(area.value);
+      alert("セーブデータをコピーしました！移行先で貼り付けてください。");
+    }
+
+    function importSyncData() {
+      const jsonStr = document.getElementById("syncImportArea").value.trim();
+      if (!jsonStr) {
+        alert("データが入力されていません。");
+        return;
+      }
+      try {
+        const parsed = JSON.parse(jsonStr);
+        localStorage.setItem("don_single_user_lamps", JSON.stringify(parsed));
+        closeModal("dataSyncModal");
+        renderApp();
+        alert("セーブデータを正常に読み込みました！");
+      } catch (e) {
+        alert("データの形式が正しくありません（JSONの形式を確認してください）。");
+      }
+    }
+
+    function generateAndUpdateCode() {
+      const songsString = JSON.stringify(songs, null, 2);
+      
+      let fullHtml = document.documentElement.outerHTML;
+      const targetRegex = /const defaultSongs = \[[\s\S]*?\];/;
+      const newDefaultSongsCode = `const defaultSongs = ${songsString};`;
+      
+      if (targetRegex.test(fullHtml)) {
+        fullHtml = fullHtml.replace(targetRegex, newDefaultSongsCode);
+      }
+
+      document.getElementById("exportCodeArea").value = "<!DOCTYPE html>\n" + fullHtml;
+      document.getElementById("codeExportModal").classList.add("active");
+    }
+
+    function copyExportCode() {
+      const area = document.getElementById("exportCodeArea");
+      area.select();
+      navigator.clipboard.writeText(area.value);
+      alert("コードをコピーしました！");
+    }
+
+    function moveSong(songId, direction) {
+      const songIndex = songs.findIndex(s => s.id === songId);
+      if (songIndex === -1) return;
+
+      const currentRank = songs[songIndex].rank;
+      const sameRankSongs = songs.filter(s => s.rank === currentRank);
+      const subIndex = sameRankSongs.findIndex(s => s.id === songId);
+
+      const targetSubIndex = subIndex + direction;
+      if (targetSubIndex < 0 || targetSubIndex >= sameRankSongs.length) return;
+
+      const targetSongId = sameRankSongs[targetSubIndex].id;
+      const targetGlobalIndex = songs.findIndex(s => s.id === targetSongId);
+
+      const temp = songs[songIndex];
+      songs[songIndex] = songs[targetGlobalIndex];
+      songs[targetGlobalIndex] = temp;
+
+      localStorage.setItem("don_songs", JSON.stringify(songs));
+      localStorage.setItem("don_songs_version", songs.length.toString());
+      renderApp();
+    }
+
+    function renderApp() {
+      const dateDisplay = document.getElementById("updateDateDisplay");
+      dateDisplay.textContent = `最終更新 ${updateDate}`;
+      if (isAdmin) {
+        dateDisplay.classList.add("editable");
+        dateDisplay.title = "クリックして日付を変更";
+      } else {
+        dateDisplay.classList.remove("editable");
+        dateDisplay.title = "";
+      }
+
+      document.getElementById("displayName").textContent = playerName;
+
+      const userLamps = getUserLamps();
+      const rateData = calculateMaimaiRate(userLamps);
+      
+      if (rateData.total > maxRatingRecord) {
+        maxRatingRecord = rateData.total;
+        localStorage.setItem("don_max_rating", maxRatingRecord);
+      }
+
+      const rateInfo = getRateStyleInfo(rateData.total);
+      
+      // 階級情報の保持（通知バナーの呼び出し部分は除外済み）
+      lastRateTierName = rateInfo.name;
+      localStorage.setItem("don_last_rate_tier", lastRateTierName);
+
+      const rateNumElem = document.getElementById("playerRate");
+      rateNumElem.textContent = rateData.total.toLocaleString();
+      rateNumElem.className = `rate-main-num ${rateInfo.cls}`;
+      
+      const badgeTitleElem = document.getElementById("rateBadgeTitle");
+      badgeTitleElem.textContent = rateInfo.name;
+      badgeTitleElem.className = `rate-badge-title ${rateInfo.cls}`;
+
+      const ratePanelBox = document.getElementById("ratePanelBox");
+      ratePanelBox.className = `maimai-rate-panel ${rateInfo.panelCls}`;
+
+      document.getElementById("maxRateLabel").textContent = "RATING (BEST 15 + BONUSES)";
+
+      const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+      const filterLamp = document.getElementById("filterLamp").value;
+
+      const container = document.getElementById("difficultyContainer");
+      container.innerHTML = "";
+
+      let totalSongs = songs.length;
+      let counts = { zenryo: 0, ka1: 0, ka2_9: 0, fullcombo: 0, clear: 0, unclear: 0 };
+
+      ranks.forEach(rank => {
+        const rankSongs = songs.filter(s => s.rank === rank && s.name.toLowerCase().includes(searchQuery));
+        if (rankSongs.length === 0) return;
+
+        const allRankSongs = songs.filter(s => s.rank === rank);
+        let rankTotalCount = allRankSongs.length;
+        let rankZenryoCount = 0;
+        let rankFcCount = 0;
+
+        allRankSongs.forEach(s => {
+          const l = userLamps[s.id] || "unclear";
+          if (l === "zenryo") {
+            rankZenryoCount++;
+            rankFcCount++;
+          } else if (l === "ka1" || l === "ka2_9" || l === "fullcombo") {
+            rankFcCount++;
+          }
+        });
+
+        let badgeHtml = "";
+        if (rankTotalCount > 0 && rankZenryoCount === rankTotalCount) {
+          badgeHtml = " <span style=\"font-size: 1.1rem;\" title=\"全良制覇\">🌈</span>";
+        } else if (rankTotalCount > 0 && rankFcCount === rankTotalCount) {
+          badgeHtml = " <span style=\"font-size: 1.1rem;\" title=\"フルコン制覇\">👑</span>";
+        }
+
+        const section = document.createElement("div");
+        section.className = "rank-section";
+
+        const title = document.createElement("div");
+        title.className = "rank-title";
+        title.innerHTML = `<span>${rank}${badgeHtml}</span> <span style="font-size:0.8rem; color:var(--text-sub);">${rankSongs.length}曲</span>`;
+        section.appendChild(title);
+
+        const grid = document.createElement("div");
+        grid.className = "song-grid";
+
+        rankSongs.forEach(song => {
+          const lamp = userLamps[song.id] || "unclear";
+          if (filterLamp !== "all" && lamp !== filterLamp) return;
+
+          counts[lamp] = (counts[lamp] || 0) + 1;
+
+          const card = document.createElement("div");
+          card.className = `song-card lamp-${lamp}`;
+          card.onclick = () => handleSongClick(song.id);
+          
+          const lampLabel = {
+            zenryo: "全良",
+            ka1: "可1",
+            ka2_9: "可2~9",
+            fullcombo: "フルコン",
+            clear: "クリア",
+            unclear: ""
+          }[lamp];
+
+          let adminBtnsHtml = "";
+          if (isAdmin) {
+            adminBtnsHtml = `
+              <div class="admin-controls">
+                <button class="btn btn-secondary btn-xs" title="上に移動" onclick="event.stopPropagation(); moveSong(${song.id}, -1)">▲</button>
+                <button class="btn btn-secondary btn-xs" title="下に移動" onclick="event.stopPropagation(); moveSong(${song.id}, 1)">▼</button>
+                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation(); openEditSongModal(${song.id})">編集</button>
+                <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation(); deleteSong(${song.id})">削除</button>
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            <div class="song-name">${song.name}</div>
+            <div class="card-footer">
+              <div class="song-status">${lampLabel}</div>
+              ${adminBtnsHtml}
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        if (grid.children.length > 0) {
+          section.appendChild(grid);
+          container.appendChild(section);
+        }
+      });
+
+      const zenryoPct = totalSongs ? ((counts.zenryo / totalSongs) * 100).toFixed(1) : 0;
+      document.getElementById("zenryoRate").textContent = `${zenryoPct}%`;
+      document.getElementById("lampCounts").textContent = `総曲数: ${totalSongs} | 全良: ${counts.zenryo} | 可1: ${counts.ka1} | 可2~9: ${counts.ka2_9} | FC: ${counts.fullcombo} | クリア: ${counts.clear}`;
+
+      document.getElementById("barZenryo").style.width = `${(counts.zenryo / totalSongs) * 100}%`;
+      document.getElementById("barKa1").style.width = `${((counts.ka1 + counts.ka2_9) / totalSongs) * 100}%`;
+      document.getElementById("barFC").style.width = `${(counts.fullcombo / totalSongs) * 100}%`;
+      document.getElementById("barClear").style.width = `${(counts.clear / totalSongs) * 100}%`;
+    }
+
+    function editUpdateDate() {
+      if (!isAdmin) return;
+      const newDate = prompt("新しい更新日を入力してください (例: 10/17):", updateDate);
+      if (newDate !== null && newDate.trim() !== "") {
+        updateDate = newDate.trim();
+        localStorage.setItem("don_update_date", updateDate);
+        renderApp();
+      }
+    }
+
+    function handleSongClick(songId) {
+      const isQuick = document.getElementById("quickCycle").checked;
+      if (isQuick) {
+        const order = ["unclear", "clear", "fullcombo", "ka2_9", "ka1", "zenryo"];
+        const userLamps = getUserLamps();
+        const current = userLamps[songId] || "unclear";
+        const nextIndex = (order.indexOf(current) + 1) % order.length;
+        userLamps[songId] = order[nextIndex];
+        saveUserLamps(userLamps);
+        renderApp();
+      } else {
+        selectedSongId = songId;
+        const song = songs.find(s => s.id === songId);
+        document.getElementById("modalSongTitle").textContent = song ? song.name : "曲の選択";
+        document.getElementById("lampModal").classList.add("active");
+      }
+    }
+
+    function selectLamp(lamp) {
+      if (!selectedSongId) return;
+      const userLamps = getUserLamps();
+      userLamps[selectedSongId] = lamp;
+      saveUserLamps(userLamps);
+
+      closeModal("lampModal");
+      renderApp();
+    }
+
+    function toggleAdmin() {
+      if (!isAdmin) {
+        document.getElementById("adminPasswordInput").value = "";
+        document.getElementById("adminPasswordModal").classList.add("active");
+        setTimeout(() => {
+          document.getElementById("adminPasswordInput").focus();
+        }, 100);
+      } else {
+        isAdmin = false;
+        alert("管理者モードを解除しました。");
+        document.getElementById("adminBadge").style.display = "none";
+        document.getElementById("addSongBtn").style.display = "none";
+        document.getElementById("saveCodeBtn").style.display = "none";
+        renderApp();
+      }
+    }
+
+    function submitAdminPassword() {
+      const pass = document.getElementById("adminPasswordInput").value;
+      try {
+        if (btoa(unescape(encodeURIComponent(pass))) === ENCODED_ADMIN_PASSKEY) {
+          isAdmin = true;
+          closeModal("adminPasswordModal");
+          alert("管理者モードが有効になりました。");
+        } else {
+          alert("パスワードが違います。");
+          document.getElementById("adminPasswordInput").value = "";
+          return;
+        }
+      } catch (e) {
+        alert("パスワードが違います。");
+        document.getElementById("adminPasswordInput").value = "";
+        return;
+      }
+
+      document.getElementById("adminBadge").style.display = isAdmin ? "inline-block" : "none";
+      document.getElementById("addSongBtn").style.display = isAdmin ? "inline-block" : "none";
+      document.getElementById("saveCodeBtn").style.display = isAdmin ? "inline-block" : "none";
+      renderApp();
+    }
+
+    function openAddSongModal() {
+      document.getElementById("newSongName").value = "";
+      document.getElementById("addSongModal").classList.add("active");
+    }
+
+    function addSong() {
+      const name = document.getElementById("newSongName").value.trim();
+      const rank = document.getElementById("newSongRank").value;
+      if (!name) return alert("曲名を入力してください");
+
+      const newId = Date.now();
+      songs.push({ id: newId, name, rank });
+      localStorage.setItem("don_songs", JSON.stringify(songs));
+      localStorage.setItem("don_songs_version", songs.length.toString());
+
+      closeModal("addSongModal");
+      renderApp();
+    }
+
+    function openEditSongModal(songId) {
+      const song = songs.find(s => s.id === songId);
+      if (!song) return;
+      document.getElementById("editSongId").value = song.id;
+      document.getElementById("editSongName").value = song.name;
+      document.getElementById("editSongRank").value = song.rank;
+      document.getElementById("editSongModal").classList.add("active");
+    }
+
+    function updateSong() {
+      const id = Number(document.getElementById("editSongId").value);
+      const name = document.getElementById("editSongName").value.trim();
+      const rank = document.getElementById("editSongRank").value;
+      if (!name) return alert("曲名を入力してください");
+
+      const song = songs.find(s => s.id === id);
+      if (song) {
+        song.name = name;
+        song.rank = rank;
+        localStorage.setItem("don_songs", JSON.stringify(songs));
+        localStorage.setItem("don_songs_version", songs.length.toString());
+      }
+
+      closeModal("editSongModal");
+      renderApp();
+    }
+
+    function deleteSong(songId) {
+      if (confirm("この曲を削除してもよろしいですか？")) {
+        songs = songs.filter(s => s.id !== songId);
+        localStorage.setItem("don_songs", JSON.stringify(songs));
+        localStorage.setItem("don_songs_version", songs.length.toString());
+        renderApp();
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("active");
+    }
+
+    renderApp();
+  </script>
+
+</body></html>
